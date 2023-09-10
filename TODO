@@ -1,0 +1,14 @@
+Setup:
+Download docker and docker-compose
+Use terminal, cd to this directory and do this command: docker-compose up
+Use terminal, cd to this directory and do this command: npm start
+Note: the first time, you may need to do npm i before you do npm start
+
+Download MongoDB Compass and open it
+after docker-compose up works, you can use the MongoDB Compass to connect to the database,
+check config.env to see the connection string
+
+
+0-Go to browser and check the 
+1-Check routes/users to see how the users list api is working
+2-
