@@ -12,3 +12,11 @@ check config.env to see the connection string
 0-Go to browser and check the 
 1-Check routes/users to see how the users list api is working
 2-
+
+// on first start
+// go to this directory
+// docker-compose start   // in order to start the container that holds the Mongodb
+// npm start   // in order to run the backend on the port 5000
+
+// await ( fetch('http://localhost:5000/api/users/list', {method: 'get'})).then(res => res.json())
+// await ( fetch('http://localhost:5000/api/users', {method: 'post'})).then(res => res.json())
