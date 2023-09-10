@@ -65,33 +65,24 @@ const UserSchema = new Schema({
     active: { type: Boolean, default: true }
 });
 
-UserSchema.pre("save", async function (next) {
-    if (!this.isModified('password')) {
-        return next();
-    }
-    const salt = await bycrypt.genSalt(10);
-    this.password = bycrypt.hashSync(this.password, 10);
-    next();
-});
+// UserSchema.pre("save", async function (next) {
+//     if (!this.isModified('password')) {
+//         return next();
+//     }
+//     const salt = await bycrypt.genSalt(10);
+//     this.password = bycrypt.hashSync(this.password, 10);
+//     next();
+// });
 
-UserSchema.methods.matchPassword= async function (password) {
-    return await bycrypt.compare(password,this.password)   
-}
-UserSchema.methods.getSignedToken= function (password) {
-    return jwt.sign({id:this._id},process.env.JWT_SECRET,{
-        expiresIn:process.env.JWT_EXPIRE
-    })   
-}
-UserSchema.methods.getResetPasswordToken= function () {
-    const resetToken= crypto.randomBytes(20).toString('hex');
-    this.resetPasswordToken= crypto.
-    createHash('sha256')
-    .update(resetToken)
-    .digest('hex');  
-    this.resetPasswordExpire = Date.now() + 10*(60*1000) 
-    return resetToken
+// UserSchema.methods.matchPassword= async function (password) {
+//     return await bycrypt.compare(password,this.password)   
+// }
+// UserSchema.methods.getSignedToken= function (password) {
+//     return jwt.sign({id:this._id},process.env.JWT_SECRET,{
+//         expiresIn:process.env.JWT_EXPIRE
+//     })   
+// }
 
-}
 
 const User = model("User", UserSchema);
  module.exports = User
