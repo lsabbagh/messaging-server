@@ -1,4 +1,5 @@
-
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 const User = require('../models/User'); 
 
 exports.list= async(req,res,next)=>{
@@ -8,12 +9,33 @@ exports.list= async(req,res,next)=>{
     res.send(users)
 };
 
-exports.create = async(req, res, next) => {
-    const user = {
-        username: 'testing' + (new Date()),
-        email: Math.random() + 'testing@gmail.com' ,
-        password: '23dasfas42234r2'
-    }
+exports.create = async (req, res, next) => {
+    try {
+      const { username, email, password } = req.body;
 
-    return User.create(user)
+      //encrypt password
+      const hashedPassword = await bcrypt.hash(password, saltRounds)
+  
+      // Create a new user with the provided data
+      const user = await User.create({
+        username,
+        email,
+        password: hashedPassword,
+      });
+  
+      // Respond with the created user
+      res.status(201).json({ user });
+    } catch (error) {
+      // Handle any errors that occur during user creation
+      next(error);
+    }
+};
+
+exports.verify = async(user) => {
+    const data = User.find({ email: user.email });
+    return data.password === user.password ? true : false;
+}
+
+exports.userId = async (req, res) => {
+    res.send(User.findOne(req.params.id));
 }
