@@ -36,6 +36,20 @@ exports.verify = async(user) => {
     return data.password === user.password ? true : false;
 }
 
-exports.userId = async (req, res) => {
-    res.send(User.findOne(req.params.id));
+exports.remove = async (req, res) => {
+  const _id = req.params.id
+  return User.deleteOne({_id})
+}
+
+exports.signIn = async (req, res) => {
+  const { username, email, password } = req.body;
+  const user = await User.findOne({username})
+  if(!user) {
+    return res.send('User not found')
+  }
+  const match = await user.matchPassword(password)
+
+  const _user = {...user.toJSON()}
+  delete _user.password
+  return res.send({match, user: _user})
 }

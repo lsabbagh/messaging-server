@@ -1,15 +1,16 @@
 const express = require("express");
 const router = express.Router();
 //const controllers
-const { list, create, verify, userId } = require("../controllers/users");
+const { list, create, verify, remove, signIn } = require("../controllers/users");
 
-//routes
+//admin apis
 router.route("/list").get(list);
 router.route("/").post(create);
-router.route("/:id").get(userId);
-//I made a verify function but didn't complete it. please CHECK!
-// router.route('/').update(create);
-// router.route('/').delete(create);
+router.route("/:id").delete(remove);
+
+
+// user apis
+router.route("/signin").post(signIn);
 
 
 module.exports =router;
