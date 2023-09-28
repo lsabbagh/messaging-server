@@ -55,6 +55,7 @@ exports.signIn = async (req, res) => {
 }
 
 exports.edit = async (req, res, next) => {
+  console.log(req.params);
   const userId = req.params.id; 
   const { username, email, password } = req.body; 
 
@@ -62,7 +63,7 @@ exports.edit = async (req, res, next) => {
     // Find the user by ID and update their information
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { username, email, password }, // Specify the fields to update
+      { username, email, password }, 
       { new: true } // This option returns the updated user data
     );
 
@@ -73,6 +74,7 @@ exports.edit = async (req, res, next) => {
     // Respond with the updated user data
     res.status(200).json({ user: updatedUser });
   } catch (error) {
-    next(error);
+    console.log(error);
+    res.send({success: false});
   }
 };
