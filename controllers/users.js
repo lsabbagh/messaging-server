@@ -53,3 +53,26 @@ exports.signIn = async (req, res) => {
   delete _user.password
   return res.send({match, user: _user})
 }
+
+exports.edit = async (req, res, next) => {
+  const userId = req.params.id; 
+  const { username, email, password } = req.body; 
+
+  try {
+    // Find the user by ID and update their information
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { username, email, password }, // Specify the fields to update
+      { new: true } // This option returns the updated user data
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Respond with the updated user data
+    res.status(200).json({ user: updatedUser });
+  } catch (error) {
+    next(error);
+  }
+};

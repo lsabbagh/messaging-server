@@ -2,10 +2,6 @@ require('dotenv').config({path:'./config.env'});
 
 const express = require("express");
 const cors = require("cors");
-const cookieParser = require('cookie-parser');
-const morgan = require('morgan');
-const { json } = require('body-parser')
-const mongoose = require('mongoose')
 const  connectDB  = require("./config/db");
 
 
@@ -21,6 +17,8 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/auth",require("./routes/auth"));
 app.use("/api/users", require("./routes/users"));
+app.use("/api/conversation", require("./routes/conversation"));
+// app.use("/api/message", require("./routes/message"));
 
 
 //ErrorHandler (Should be last piece of middleware)
