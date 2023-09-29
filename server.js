@@ -18,7 +18,7 @@ app.use(express.json());
 app.use("/api/auth",require("./routes/auth"));
 app.use("/api/users", require("./routes/users"));
 app.use("/api/conversation", require("./routes/conversation"));
-// app.use("/api/message", require("./routes/message"));
+app.use("/api/message", require("./routes/message"));
 
 
 //ErrorHandler (Should be last piece of middleware)
