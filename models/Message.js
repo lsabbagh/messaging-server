@@ -1,6 +1,6 @@
 const{ model, Schema } = require('mongoose');
 
-const MessageSchema = new mongoose.Schema({
+const MessageSchema = new Schema({
   conversation_id: { type: Schema.Types.ObjectId, ref: 'Conversation' },
   sender_id: { type: Schema.Types.ObjectId, ref: 'User' },
   content: String,
