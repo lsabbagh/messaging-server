@@ -1,11 +1,10 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const Conversation = require('../models/Conversation'); 
+const Message = require('../models/Message'); 
 
 exports.list= async(req,res,next)=>{
-
     const conversations = await Conversation.find({})
-    console.log('....', conversations)
     
     res.send({conversations})
 };
@@ -13,12 +12,15 @@ exports.list= async(req,res,next)=>{
 exports.create = async (req, res, next) => {
     try {
 
-      const {participants} = req.body
+      const {userId, participantId} = req.body
+      const participants = [userId, participantId]
+      const id = participants.join('-')
       // Create a new conversation with the provided data
-      const conversation = await Conversation.create({
-        participants,
-      });
+      const conversation = await Conversation.findOneAndUpdate(
+        {id},
+        { id, participants });
   
+        console.log('....', conversation)
       // Respond with the created conversation
       res.status(201).json({ conversation });
     } catch (error) {
