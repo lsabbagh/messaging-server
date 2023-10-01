@@ -19,6 +19,7 @@ app.use("/api/auth",require("./routes/auth"));
 app.use("/api/users", require("./routes/users"));
 app.use("/api/conversation", require("./routes/conversation"));
 app.use("/api/message", require("./routes/message"));
+app.use("/api/admins", require("./routes/admins"));
 
 
 //ErrorHandler (Should be last piece of middleware)
