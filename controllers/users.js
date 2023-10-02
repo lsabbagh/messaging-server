@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const User = require('../models/User');
+const nodeMailer = require('nodemailer');
 
 exports.list = async (req, res, next) => {
 
@@ -80,3 +81,14 @@ exports.edit = async (req, res, next) => {
     res.send({ success: false });
   }
 };
+
+exports.forgetpassword = async (req, res) => {
+  const {username, email} = req.body;
+  const user = await User.findOne({ username });
+
+  if(user.email === email) {
+    return res.status(200).send(true);
+  } else {
+    return res.status(404).send('failed');
+  }
+}

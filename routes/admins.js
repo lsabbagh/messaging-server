@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
 //const controllers
-const { list, create, verify, remove, signIn, edit } = require("../controllers/admins");
+const { list, create, verify, remove, signIn, edit, confirm } = require("../controllers/admins");
 
 //admin apis
 router.route("/list").get(list);
+router.route("/confirm").post(confirm);
 router.route("/").post(create);
 router.route("/:id").delete(remove);
 router.route("/:id").put(edit);

