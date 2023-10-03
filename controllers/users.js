@@ -2,11 +2,12 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const User = require('../models/User');
 const nodeMailer = require('nodemailer');
+const { type } = require('os');
 
 exports.list = async (req, res, next) => {
 
   const users = await User.find({})
-
+  console.log("....", users);
   res.send(users)
 };
 
@@ -44,16 +45,19 @@ exports.remove = async (req, res) => {
 
 exports.signIn = async (req, res) => {
   const { username, email, password } = req.body;
-  const user = await User.findOne({ username })
-  if (!user) {
-    return res.send('User not found')
+  const user = await User.findOne({ username });
+  if(user == null || !user) {
+    console.log('stopped..user', typeof(user), user, username);
+    return res.status(401).send({match: false,  message: 'Incorrect username or password'});
   }
   const match = await user.matchPassword(password)
   if (!match) {
-    return res.status(401).send('Incorrect password');
+    console.log('stopped..pass');
+    return res.status(401).send({match, message: 'Incorrect username or password'});
   }
   const _user = { ...user.toJSON() }
   delete _user.password
+  console.log('go');
   return res.send({ match, user: _user })
 }
 
@@ -90,5 +94,14 @@ exports.forgetpassword = async (req, res) => {
     return res.status(200).send(true);
   } else {
     return res.status(404).send('failed');
+  }
+
+  const html = `
+
+  `
+  async function sendMail () {
+    const transporter = nodeMailer.createTransport({
+      
+    })
   }
 }
