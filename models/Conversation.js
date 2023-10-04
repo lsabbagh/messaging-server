@@ -14,6 +14,7 @@ Conversation.findConversation = async function (userId, participantId) {
     $and: [
       { participants: { $in: [userId] } },
       { participants: { $in: [participantId] } },
+      { type: null },
     ]
   });
   return conv;

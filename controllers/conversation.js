@@ -30,8 +30,9 @@ exports.list = async (req, res, next) => {
 exports.create = async (req, res, next) => {
   try {
     console.log('....first', req.params);
-    const { userId, participantId } = req.params
-    const {title, type} = req.body
+    const { userId, participantId } = req.params;
+    const {title, type} = req.body;   //CHECK THIS
+    // if(!type){title = ''};
     const participants = [userId, participantId].sort();
     console.log('....pp', participants);
     let conversation = await Conversation.findConversation(userId, participantId);
@@ -68,9 +69,24 @@ exports.listAllGroups = async (req, res) => {
   return res.send(groups);
 }
 exports.createGroup = async (req, res) => {
-  const {title, type, participants} = req.body;
+  const {title, participants} = req.body;
+  const type = 'group';
   const group = await Conversation.create({title, type, participants});
-  return res.send(group);
+
+  // NEW ERROR FOUND:
+  // in the create conversation function 
+  // the algo tries to find the conversation
+  // based on the userID and participantId
+  // so if both users have a group it may return the group
+  // possible solution check the type
+  // if (type !== "group && id = id....")
+
+  // CHECK the findConversation function
+
+  const messages = await Message.find({ conversation_id: group?._id })
+  console.log('....ff', { group, messages });
+
+  res.status(201).json({ group, messages });
 }
 
 exports.editGroup = async (req, res) => {
