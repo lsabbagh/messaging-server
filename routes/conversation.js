@@ -7,7 +7,7 @@ router.route("/list/:userId").get(list); //@TODO: remove the :userId and use fro
 router.route("/:userId/:participantId").post(create);
 router.route("/:conversationId").delete(remove);
 // router.route("/groups").get(listGroups);
-router.route("/list/groups").get(listAllGroups);
+router.route("/groups/list").get(listAllGroups);
 router.route("/groups/").post(createGroup);
 router.route("/groups/:groupId").put(editGroup);
 // router.route("/groups/:groupId").delete(deleteGroup);

@@ -1,8 +1,9 @@
 const{ model, Schema } = require('mongoose');
+const Message = require('../models/Message');
 
 // Define the Conversation schema
 const ConversationSchema = new Schema({
-  title: {type: String, required: true},
+  title: {type: String, required: false},
   type: {type: String, enum:["group" , null]},
   participants: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   created_at: { type: Date, default: Date.now },
@@ -18,6 +19,11 @@ Conversation.findConversation = async function (userId, participantId) {
     ]
   });
   return conv;
+}
+
+Conversation.getMessages = async function (conversationId) {
+  const messages = await Message.find({ conversation_id: conversationId })
+  return messages;
 }
 
  module.exports = Conversation
