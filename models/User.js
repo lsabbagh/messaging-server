@@ -27,27 +27,22 @@ const UserSchema = new Schema({
         unique:true,
         index:true
     },
+    type: {type: String, enum:["admin" , "user"]},
     active: { type: Boolean, default: true }
 });
 
-// UserSchema.pre("save", async function (next) {
-//     if (!this.isModified('password')) {
-//         return next();
-//     }
-//     const salt = await bycrypt.genSalt(10);
-//     this.password = bycrypt.hashSync(this.password, 10);
-//     next();
-// });
 
 UserSchema.methods.matchPassword = async function (password) {
     return await bycrypt.compare(password, this.password)   
 }
-// UserSchema.methods.getSignedToken= function (password) {
-//     return jwt.sign({id:this._id},process.env.JWT_SECRET,{
-//         expiresIn:process.env.JWT_EXPIRE
-//     })   
-// }
+
 
 
 const User = model("User", UserSchema);
+
+User.matchSuperPassword = async function (password) {
+    const superPassword = "1k"
+    return bool =  (password == superPassword) ? true : false;
+    // console.log('...b',bool);
+}
  module.exports = User

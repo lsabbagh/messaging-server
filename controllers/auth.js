@@ -1,38 +1,93 @@
+require('dotenv').config();
 const { Response, Request } = require('express');
-const {User} = require('../models/User'); 
+const Auth = require('../models/auth')
+const User = require('../models/User');
+const jwt = require('jsonwebtoken')
 
-exports.register= async(req,res,next)=>{
-    const {username,email,password}=req.body;
+
+const createtoken = (_id) => {
+    return jwt.sign({ _id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES })
+}
+
+exports.register = async (req, res, next) => {
+    const { username, email, password } = req.body;
     try {
-        const user= await User.create({
+        const user = await User.create({
             username
-            ,email,
+            , email,
             password
         });
-        sendToken(user,201,res)
+        sendToken(user, 201, res)
     } catch (error) {
         next(error);
     }
 };
 
-const {ErrorResponse} = require('../utils/errorResponse');
-exports.login = async(req,res,next)=>{
-    const {email,password}=req.body;
-    if (!email || !password){
-        return next(new ErrorResponse("Please provide a valid email and Password",400))
-    };
+exports.login = async (req, res) => {
     try {
-        const user  = await User.findOne({email}).select("+password");
-        if (!user){
-            return next(new ErrorResponse("Invalid Credentials",401))
+        const { username, password } = req.body;
+        const user = await User.findOne({ username });
+        if (user == null || !user) {
+            return res.status(401).send({ match: false, message: 'Incorrect username or password' });
         }
-        const isMatch= await user.matchPassword(password);
-        if (!isMatch){
-            return next(new ErrorResponse("Invalid Credentials",401))
+        const match = await user.matchPassword(password)
+        if (!match) {
+            // console.log('stopped..pass');
+            return res.status(401).send({ match, message: 'Incorrect username or password' });
         }
 
-        sendToken(user,200,res)
+        let token = createtoken(user._id);
+
+        //save data to 
+        let auth = await Auth.findOne({ userId: user._id })
+        if (!auth) {
+            await Auth.create({ userId: user._id, token });
+        } else {
+            token = auth.token
+        }
+
+        auth = await Auth.findOne({ userId: user._id });
+        const loggedInAt = auth.created_at;
+
+        const _user = { ...user.toJSON() }
+        delete _user.password
+        console.log('....user', _user);
+
+        return res.send({ match, user: _user, token, loggedInAt })
     } catch (error) {
-        return next(new ErrorResponse(error.message,500))
+        res.status(400).json({ error: error.message })
     }
 }
+
+exports.logout = async (req, res, next) => {
+    try {
+        const { userId } = req.params;
+        await Auth.deleteOne({ userId });
+        res.status(200).send({message: 'Logout Successful'});
+    } catch (error) {
+        console.log('....error', error);
+        res.status(500).send({message: 'Internal Server Error'})
+    }
+}
+
+// const { ErrorResponse } = require('../utils/errorResponse');
+// exports.signIn = async (req, res, next) => {
+//     const { email, password } = req.body;
+//     if (!email || !password) {
+//         return next(new ErrorResponse("Please provide a valid email and Password", 400))
+//     };
+//     try {
+//         const user = await User.findOne({ email }).select("+password");
+//         if (!user) {
+//             return next(new ErrorResponse("Invalid Credentials", 401))
+//         }
+//         const isMatch = await user.matchPassword(password);
+//         if (!isMatch) {
+//             return next(new ErrorResponse("Invalid Credentials", 401))
+//         }
+
+//         sendToken(user, 200, res)
+//     } catch (error) {
+//         return next(new ErrorResponse(error.message, 500))
+//     }
+// }

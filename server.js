@@ -15,11 +15,15 @@ connectDB()
 app.use(cors());
 
 app.use(express.json());
+// app.use('/',(req, res, next)=>{
+//     console.log('....params', {params: req.params, originalUrl: req.originalUrl});
+    
+//     next()
+// })
 app.use("/api/auth",require("./routes/auth"));
 app.use("/api/users", require("./routes/users"));
 app.use("/api/conversation", require("./routes/conversation"));
 app.use("/api/message", require("./routes/message"));
-app.use("/api/admins", require("./routes/admins"));
 
 
 //ErrorHandler (Should be last piece of middleware)

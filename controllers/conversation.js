@@ -10,12 +10,13 @@ exports.list = async (req, res, next) => {
   let conversations = await Conversation.find({
     participants: { $in: [userId] }
   })
-  const users = await User.find({})
+  // console.log('....conv', conversations);
+  const users = await User.find({});
   const usersById = {}
   users.forEach(user => {
     usersById[user._id] = user
   })
-  console.log('....list done',);
+  // console.log('....list done', conversations);
   conversations = conversations.map(conversation => {
     const otherParticipantId = conversation.participants
       .sort(item => item != userId ? -1 : 1)?.[0]
@@ -29,45 +30,48 @@ exports.list = async (req, res, next) => {
 
 exports.create = async (req, res, next) => {
   try {
-    console.log('....first', req.params);
-    const { userId, participantId } = req.params;
-    const { title, type } = req.body;   //CHECK THIS
-    // if(!type){title = ''};
-    const participants = [userId, participantId].sort();
-    console.log('....pp', participants);
-    let conversation = await Conversation.findConversation(userId, participantId);
-    // console.log('...con', conversation);
-    if (!conversation) {
-      console.log('....', 'conversation created');
-      await Conversation.create({ participants })
+    const { userId } = req.params;
+    const { type, id } = req.body;
+    const body = req.body
+    console.log('....create', {body, type, id, userId});
+    if (type == undefined || type === 'conversation') {
+      const participants = [userId, id].sort();
+      console.log('....pp', participants);
+      let conversation = await Conversation.findConversation(type, id, userId);
+      // if conversation does not exist create it and then find it
+      if (!conversation) {
+        console.log('....conversation created', typeof(conversation));
+        const type = "conversation";
+        await Conversation.create({ participants, type })
+      }
+      conversation = await Conversation.findConversation(type, id, userId);
+      // get conversation's messages
+      const messages = await Conversation.getMessages(conversation?._id)
+      console.log('....ff', { conversation, messages });
+      res.status(201).json({ conversation, messages });
+    } 
+    else if (type === 'group') {
+      let conversation = await Conversation.findConversation(type, id, userId);
+
+      // get conversation's messages if the group is found
+      if (conversation) {
+        const messages = await Conversation.getMessages(conversation?._id)
+        console.log('....ff', { conversation, messages });
+        return res.status(201).json({ conversation, messages });
+      }
     }
-    conversation = await Conversation.findConversation(userId, participantId);
-    // console.log('...con2', conversation);
-    // conversation = await Conversation
-    //   .findOneAndUpdate({ _id: conversation?._id }, { participants });
-    const messages = await Conversation.getMessages(conversation?._id)
-    console.log('....ff', { conversation, messages });
-    res.status(201).json({ conversation, messages });
-  } catch (error) {
+  }catch (error) {
     console.log('....error', error);
     // Handle any errors that occur during conversation creation
     next(error);
   }
-};
-
-exports.remove = async (req, res) => {
-  const {conversationId} = req.params
-  console.log('....id to be deleted', conversationId);
-  await Conversation.deleteOne({ _id: conversationId });
-  return res.send({success: true})
 }
 
-
-
-
-
-exports.listGroups = async (req, res) => {
-  return res.send('..');
+exports.remove = async (req, res) => {
+  const { conversationId } = req.params
+  console.log('....id to be deleted', conversationId);
+  await Conversation.deleteOne({ _id: conversationId });
+  return res.send({ success: true })
 }
 
 exports.listAllGroups = async (req, res) => {
@@ -95,18 +99,7 @@ exports.createGroup = async (req, res) => {
     group = await Conversation.findOne({ title, type });
   }
   console.log('....lololol',);
-  
   console.log('....grp', group);
-
-  // NEW ERROR FOUND:
-  // in the create conversation function 
-  // the algo tries to find the conversation
-  // based on the userID and participantId
-  // so if both users have a group it may return the group
-  // possible solution check the type
-  // if (type !== "group && id = id....")
-
-  // CHECK the findConversation function
 
   const messages = await Conversation.getMessages(group?._id)
   console.log('....ff', { group, messages });
@@ -134,9 +127,4 @@ exports.editGroup = async (req, res) => {
     console.log(error);
     res.send({ success: false });
   }
-}
-
-exports.deleteGroup = async (req, res) => {
-  const _id = req.params.id
-  return Conversation.deleteOne({ _id })
 }
