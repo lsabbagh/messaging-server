@@ -4,6 +4,7 @@ const { model, Schema } = require('mongoose')
 const AuthenticationSchema = new Schema({
   userId: { type: String, required: true },
   token: { type: String, required: true },
+  authType: { type: String, enum: ["cms", "mbl"] },
   created_at: { type: Date, default: Date.now },
 });
 

@@ -13,7 +13,7 @@ router.route("/:id").put(edit);
 router.route("/confirm").post(confirm);
 
 // admin sign in for users crud table
-router.route("/adminSignin").post(adminSignin);
+// router.route("/adminSignin").post(adminSignin);
 
 // user api/:userIds
 // router.route("/signin").post(signIn);

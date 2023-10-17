@@ -122,7 +122,9 @@ exports.forgetpassword = async (req, res) => {
 exports.confirm = async (req, res) => {
   try {
     const { password } = req.body;
+    console.log('....confirm....confirm....confirm...', );
     const match = await User.matchSuperPassword(password)
+    console.log('....isConfirmed', match);
     return res.send(match);
   }
   catch (error) {
@@ -131,21 +133,21 @@ exports.confirm = async (req, res) => {
   return res.send(false)
 }
 
-exports.adminSignin = async (req, res) => {
-  const { username, password } = req.body;
-  const type = "admin";
-  const admin = await User.findOne({ username, type })
-  console.log('....123', username, password);
-  if (!admin) {
-    return res.status(404).send('Admin not found');
-  }
-  console.log('....admin found' );
-  const match = await admin.matchPassword(password)
-  if (!match) {
-    return res.status(401).send('Incorrect password');
-  }
-  console.log('....pass found');
-  const _admin = { ...admin.toJSON() }
-  delete _admin.password
-  return res.send({ match, admin: _admin })
-}
+// exports.adminSignin = async (req, res) => {
+//   const { username, password } = req.body;
+//   const type = "admin";
+//   const admin = await User.findOne({ username, type })
+//   console.log('....123', username, password);
+//   if (!admin) {
+//     return res.status(404).send('Admin not found');
+//   }
+//   console.log('....admin found' );
+//   const match = await admin.matchPassword(password)
+//   if (!match) {
+//     return res.status(401).send('Incorrect password');
+//   }
+//   console.log('....pass found');
+//   const _admin = { ...admin.toJSON() }
+//   delete _admin.password
+//   return res.send({ match, admin: _admin })
+// }
