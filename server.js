@@ -30,7 +30,7 @@ app.use('/', (req, res, next) => {
 app.post('/api/login', login);
 app.post('/api/admin/login', adminLogIn);
 app.delete('/api/logout/:userId', logout);
-// app.use('/', verifyToken);
+app.use('/', verifyToken);
 
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/users", require("./routes/users"));

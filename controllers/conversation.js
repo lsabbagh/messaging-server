@@ -78,14 +78,28 @@ exports.remove = async (req, res) => {
   return res.send({ success: true })
 }
 
+// exports.listAllGroups = async (req, res) => {
+//   const groups = await Conversation.find({ type: "group" }).populate('participants');
+//   const groupsWithParticipantNames = await Promise.all(groups.map(async (group) => {
+//     const populatedParticipants = await User.populate(group.participants, { path: 'participants', select: 'username' });
+//     const participantNames = populatedParticipants.map(user => user.username).join(', ')
+//     return { ...group.toObject(), participants: participantNames };
+//   }));
+//   return res.send(groupsWithParticipantNames);
+// }
 exports.listAllGroups = async (req, res) => {
-  const groups = await Conversation.find({ type: "group" }).populate('participants');
-  const groupsWithParticipantNames = await Promise.all(groups.map(async (group) => {
-    const populatedParticipants = await User.populate(group.participants, { path: 'participants', select: 'username' });
-    const participantNames = populatedParticipants.map(user => user.username).join(', ')
-    return { ...group.toObject(), participants: participantNames };
-  }));
-  return res.send(groupsWithParticipantNames);
+  try {
+    const groups = await Conversation.find({ type: "group" }).populate('participants');
+    const groupsWithParticipantDetails = await Promise.all(groups.map(async (group) => {
+      const populatedParticipants = await User.find({ _id: { $in: group.participants } }, 'username');
+      const participants = populatedParticipants.map(user => ({ id: user._id, username: user.username }));
+      return { ...group.toObject(), participants };
+    }));
+    return res.send(groupsWithParticipantDetails);
+  } catch (error) {
+    console.error('Error fetching groups with participants:', error);
+    return res.status(500).send('Internal Server Error');
+  }
 }
 
 exports.createGroup = async (req, res) => {
@@ -110,16 +124,19 @@ exports.createGroup = async (req, res) => {
 }
 
 exports.editGroup = async (req, res) => {
-  const groupId = req.params._id
+  const {groupId} = req.params;
   const { title, participants } = req.body;
+  console.log('....editGroup', { title, participants });
   // const participantIds = participants.map(participant => participant._id);
   try {
-    const updatedGroup = Conversation.findByIdAndUpdate(
+    const updatedGroup = await Conversation.findByIdAndUpdate(
       groupId,
       { title, participants },
       { new: true }
     )
+    console.log('....updatedGroup', updatedGroup);
     if (!updatedGroup) {
+      console.log('....updatedGroup..!!!', updatedGroup);
       return res.status(404).json({ error: "Group not found" });
     }
 

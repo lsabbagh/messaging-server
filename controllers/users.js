@@ -13,13 +13,13 @@ exports.list = async (req, res, next) => {
 
 
 exports.userList = async (req, res, next) => {
-  const users = await User.find({type: "user"})
+  const users = await User.find({ type: "user" })
   // console.log("....", users);
   res.send(users)
 };
 
 exports.adminList = async (req, res, next) => {
-  const users = await User.find({type: "admin"})
+  const users = await User.find({ type: "admin" })
   // console.log("....", users);
   res.send(users)
 };
@@ -77,13 +77,13 @@ exports.remove = async (req, res) => {
 exports.edit = async (req, res, next) => {
   // console.log(req.params);
   const userId = req.params.id;
-  const { username, email, password } = req.body;
+  const { username, email } = req.body;
 
   try {
     // Find the user by ID and update their information
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { username, email, password },
+      { username, email },
       { new: true } // This option returns the updated user data
     );
 
@@ -100,10 +100,10 @@ exports.edit = async (req, res, next) => {
 };
 
 exports.forgetpassword = async (req, res) => {
-  const {username, email} = req.body;
+  const { username, email } = req.body;
   const user = await User.findOne({ username });
 
-  if(user.email === email) {
+  if (user.email === email) {
     return res.status(200).send(true);
   } else {
     return res.status(404).send('failed');
@@ -112,9 +112,9 @@ exports.forgetpassword = async (req, res) => {
   const html = `
 
   `
-  async function sendMail () {
+  async function sendMail() {
     const transporter = nodeMailer.createTransport({
-      
+
     })
   }
 }
@@ -122,7 +122,7 @@ exports.forgetpassword = async (req, res) => {
 exports.confirm = async (req, res) => {
   try {
     const { password } = req.body;
-    console.log('....confirm....confirm....confirm...', );
+    console.log('....confirm....confirm....confirm...',);
     const match = await User.matchSuperPassword(password)
     console.log('....isConfirmed', match);
     return res.send(match);
