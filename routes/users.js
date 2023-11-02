@@ -1,7 +1,10 @@
 const express = require("express");
 const router = express.Router();
 //const controllers
-const { list, create, verify, remove, signIn, edit, forgetpassword, confirm, userList, adminList, adminSignin } = require("../controllers/users");
+const { list, create, verify, remove, signIn, edit, 
+    forgetpassword, confirm, userList, adminList, adminSignin, 
+    getProfile, editProfile 
+} = require("../controllers/users");
 
 //admin apis
 router.route("/list").get(list);
@@ -12,11 +15,11 @@ router.route("/:id").delete(remove);
 router.route("/:id").put(edit);
 router.route("/confirm").post(confirm);
 
-// admin sign in for users crud table
-// router.route("/adminSignin").post(adminSignin);
 
-// user api/:userIds
-// router.route("/signin").post(signIn);
+router.route("/user/profile/:id").get(getProfile)
+router.route("/user/profile/:id").put(editProfile)
+
+
 router.route("/forgetpassword").post(forgetpassword)
 
 

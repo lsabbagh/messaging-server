@@ -4,14 +4,16 @@ const Message = require('../models/Message');
 // Define the Conversation schema
 const ConversationSchema = new Schema({
   title: { type: String, required: false },
+  profile: { type: String, required: false },
   type: { type: String, enum: ["group", "conversation"] },
   participants: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   created_at: { type: Date, default: Date.now },
+  lastMessage: {type: Date}
 });
 const Conversation = model("Conversation", ConversationSchema);
 
 Conversation.findConversation = async function (type, id, userId) {
-  console.log('....', );
+  console.log('....',);
   if (type === "conversation") {
     const conv = await Conversation.findOne({
       $and: [

@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
 //const controllers
-const { list, create, messageGroup, remove, listGroups, listAllGroups, createGroup, editGroup, deleteGroup } = require("../controllers/conversation");
+const { list, create, messageGroup, remove, listGroups, listAllGroups, createGroup, 
+    editGroup, deleteGroup, lastMessageUpdate 
+} = require("../controllers/conversation");
 
 
 router.route("/groups/list").get(listAllGroups);
