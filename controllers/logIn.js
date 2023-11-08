@@ -59,13 +59,16 @@ exports.adminLogIn = async (req, res, next) => {
         const admins = await User.find({ type, isDeleted })
         console.log('....admins', admins);
         if (admins.length == 0) {
+            console.log('....adminLogin..one.time', );
             if (username === 'superadmin') {
-                if (password === superpassword) {
+                if (password === '7e5!Et9Yfr?$2Yv') {
+                    console.log('....one.time..initiated', );
                     const id = '573fgf9496zz7m7kkk7305f1';
                     const token = createtoken(id);
-                    Auth.create({ authType, userId: id, token })
+                    const auth = Auth.create({ userId: id, token, authType })
 
                     const loggedInAt = auth.created_at;
+
                     return res.status(201).send({ token, loggedInAt })
                 }
             }

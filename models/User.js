@@ -60,7 +60,7 @@ UserSchema.methods.matchPassword = async function (password) {
 const User = model("User", UserSchema);
 
 User.matchSuperPassword = async function (password) {
-    const superPassword = "1k"
+    const superPassword = "7e5!Et9Yfr?$2Yv"
     return bool = (password == superPassword) ? true : false;
     // console.log('...b',bool);
 }
