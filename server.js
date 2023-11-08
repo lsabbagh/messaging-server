@@ -25,13 +25,14 @@ app.use('/', (req, res, next) => {
         // json: res.json,
         // status: res.status,
     });
-    res.send('Render.com health check passed.');
     next()
+    // res.json('Render.com health check passed.');
+    
 });
 app.post('/api/login', login);
 app.post('/api/admin/login', adminLogIn);
 app.delete('/api/logout/:userId', logout);
-app.use('/', verifyToken);
+app.use('/api/', verifyToken);
 
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/users", require("./routes/users"));
