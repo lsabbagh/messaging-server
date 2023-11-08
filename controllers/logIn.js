@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken')
 
 
 const createtoken = (_id) => {
-    return jwt.sign({ _id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES })
+    return jwt.sign({ _id }, process.env.JWT_SECRET, {})
 }
 
 exports.login = async (req, res) => {
@@ -107,6 +107,7 @@ exports.adminLogIn = async (req, res, next) => {
 
         return res.status(201).send({ admin: _admin, token, loggedInAt })
     } catch (error) {
+        console.log('....error', error);
         res.status(400).json({ error: error.message })
     }
 }
