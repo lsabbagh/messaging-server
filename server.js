@@ -25,6 +25,7 @@ app.use('/', (req, res, next) => {
         // json: res.json,
         // status: res.status,
     });
+    res.send('Render.com health check passed.');
     next()
 });
 app.post('/api/login', login);

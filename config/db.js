@@ -20,7 +20,7 @@ const connectDB = async () => {
     }
 
     // await mongoose.connect(dbURI);
-    console.log('....dbURI', dbURI);
+    // console.log('....dbURI', dbURI);
 
     mongoose.set('strictQuery', true);
     await mongoose.connect(dbURI, {
