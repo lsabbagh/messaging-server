@@ -37,7 +37,7 @@ const UserSchema = new Schema({
     },
     profilePic: {
         type: String,
-        default: 'https://imgur.com/a/X3TMJ7a'
+        default: 'https://i.imgur.com/hZ9AWzX.jpg'
     },
     firstName: {
         type: String,

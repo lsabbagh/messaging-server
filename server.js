@@ -53,3 +53,24 @@ process.on("unhandledRejection", (error, promise) => {
     server.close(() => process.exit(1))
 
 })
+
+
+// 
+// SUPER ADMIN PASSWORD
+// 7e5!Et9Yfr?$2Yv
+//  
+//  
+// FEATURES:
+// add animation: chatoo and the logo
+// forget password
+// status (online, typing, offline) 
+// last message should be displayed on chat list screen
+// background selected by user image or default image or color
+// line seperating chat list screen mafrod ykon shorter
+// the profile should appear on the header of chat screen
+// user should be able to change his email
+// 
+// 
+// 
+// make a web version
+// 
