@@ -7,7 +7,7 @@ const connectDB = require("./config/db");
 const app = express();
 const PORT = process.env.PORT || 5000;
 const { errorHandler } = require('./middleware/error')
-const { login, adminLogIn, logout, verifyToken } = require("./controllers/logIn")
+const { login, adminLogIn, logout, forgetpassword, verifyToken } = require("./controllers/logIn")
 const Auth = require('./models/auth');
 
 //connect to db
@@ -27,11 +27,13 @@ app.use('/', (req, res, next) => {
     });
     next()
     // res.json('Render.com health check passed.');
-    
+
 });
 app.post('/api/login', login);
 app.post('/api/admin/login', adminLogIn);
 app.delete('/api/logout/:userId', logout);
+app.post("/api/changePassword/user/forgetPassword", forgetpassword)
+
 app.use('/api/', verifyToken);
 
 app.use("/api/auth", require("./routes/auth"));

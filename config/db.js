@@ -2,8 +2,7 @@ const { ConnectOptions, MongoClient, ServerApiVersion } = require('mongodb');
 const mongoose = require('mongoose');
 // require('dotenv').config()
 
-// const mongoURL = 'mongodb+srv://mahmoudalaissami:Sz3rFZUwqzKtMBqB@chatoo.rug7upo.mongodb.net/?retryWrites=true&w=majority'
-const mongoURL = 'mongodb+srv://mahmoudalaissami:Sz3rFZUwqzKtMBqB@chatoo.rug7upo.mongodb.net/'
+const localhostUri = 'mongodb://localhost:27017'
 const dbURI = process.env.MONGO_URI
 
 const client = new MongoClient(dbURI, {
