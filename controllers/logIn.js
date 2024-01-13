@@ -1,5 +1,5 @@
 const express = require("express");
-require("dotenv").config();
+require('dotenv').config({ path: './config.env' });
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const Auth = require("../models/auth");
@@ -65,7 +65,7 @@ exports.adminLogIn = async (req, res, next) => {
         if (admins.length == 0) {
             console.log("....adminLogin..one.time");
             if (username === "superadmin") {
-                if (password === "7e5!Et9Yfr?$2Yv") {
+                if (password === process.env.SUPER_PASSWORD) {
                     console.log("....one.time..initiated");
                     const id = "573fgf9496zz7m7kkk7305f1";
                     const token = createtoken(id);
@@ -140,7 +140,7 @@ exports.forgetpassword = async (req, res) => {
 
     if (user.email !== email) {
         console.log(".... email", email);
-        return res.status(406).send("failed");
+        return res.status(406).json({ match: false });
     }
 
     const html = `
@@ -171,20 +171,13 @@ exports.forgetpassword = async (req, res) => {
         </html>
     `;
 
-    const transporter = nodeMailer.createTransport(
-    /*"SMTP", */ {
-            // host: smtp.gmail.com,
-            service: "Gmail",
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_APP_PASS,
-            },
-            // authMethod: "NTLM",
-            // secure: false,
-            // tls: { rejectUnauthorized: false },
-            // debug: true,
-        }
-    );
+    const transporter = nodeMailer.createTransport({
+        service: "Gmail",
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_APP_PASS,
+        },
+    });
 
     const mailOptions = {
         // from: "youremail@gmail.com",
@@ -202,7 +195,7 @@ exports.forgetpassword = async (req, res) => {
         }
     });
 
-    res.status(202).json({ message: "DONE..pass" });
+    res.status(202).json({ match: true });
 };
 
 exports.verifyToken = async (req, res, next) => {

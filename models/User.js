@@ -3,6 +3,7 @@ const bycrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require('crypto');
 const { model, Schema, Model, Document } = require('mongoose');
+require('dotenv').config({ path: './config.env' });
 
 // define user schema
 const UserSchema = new Schema({
@@ -60,8 +61,8 @@ UserSchema.methods.matchPassword = async function (password) {
 const User = model("User", UserSchema);
 
 User.matchSuperPassword = async function (password) {
-    const superPassword = "7e5!Et9Yfr?$2Yv"
-    return bool = (password == superPassword) ? true : false;
+    // const superPassword = "7e5!Et9Yfr?$2Yv"
+    return bool = (password == process.env.SUPER_PASSWORD) ? true : false;
     // console.log('...b',bool);
 }
 module.exports = User

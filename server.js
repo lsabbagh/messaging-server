@@ -64,7 +64,7 @@ process.on("unhandledRejection", (error, promise) => {
 //  
 // FEATURES:
 // add animation: chatoo and the logo
-// forget password
+// forget password: shuffle the id
 // status (online, typing, offline) 
 // last message should be displayed on chat list screen
 // background selected by user image or default image or color
