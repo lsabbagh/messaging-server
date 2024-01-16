@@ -1,5 +1,5 @@
 const express = require("express");
-require('dotenv').config({ path: './config.env' });
+require("dotenv").config({ path: "./config.env" });
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const Auth = require("../models/auth");
@@ -17,7 +17,7 @@ exports.login = async (req, res) => {
         const { username, password } = req.body;
         const isDeleted = false;
         const user = await User.findOne({ username, isDeleted });
-        if (user == null || !user) {
+        if (!user) {
             return res
                 .status(401)
                 .send({ match: false, message: "Incorrect username or password" });
@@ -35,10 +35,10 @@ exports.login = async (req, res) => {
         //save data to DB
         let auth = await Auth.findOne({ userId: user._id, authType });
         if (!auth) {
-            await Auth.create({ userId: user._id, token, authType });
-        } else {
-            token = auth.token;
-        }
+            auth = await Auth.create({ userId: user._id, token, authType });
+        } 
+
+        token = auth.token;
 
         auth = await Auth.findOne({ userId: user._id, authType });
         const loggedInAt = auth.created_at;
@@ -62,20 +62,20 @@ exports.adminLogIn = async (req, res, next) => {
         const isDeleted = false;
         const admins = await User.find({ type, isDeleted });
         console.log("....admins", admins);
-        if (admins.length == 0) {
+        if (
+            !admins.length &&
+            username === "superadmin" &&
+            password === process.env.SUPER_PASSWORD
+        ) {
             console.log("....adminLogin..one.time");
-            if (username === "superadmin") {
-                if (password === process.env.SUPER_PASSWORD) {
-                    console.log("....one.time..initiated");
-                    const id = "573fgf9496zz7m7kkk7305f1";
-                    const token = createtoken(id);
-                    const auth = Auth.create({ userId: id, token, authType });
+            console.log("....one.time..initiated");
+            const id = "573fgf9496zz7m7kkk7305f1";
+            const token = createtoken(id);
+            const auth = Auth.create({ userId: id, token, authType });
 
-                    const loggedInAt = auth.created_at;
+            const loggedInAt = auth.created_at;
 
-                    return res.status(201).send({ token, loggedInAt });
-                }
-            }
+            return res.status(201).send({ token, loggedInAt });
         }
         const admin = await User.findOne({ username, type, isDeleted });
         console.log("....admin", admin);
