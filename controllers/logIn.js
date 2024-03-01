@@ -13,7 +13,7 @@ const createtoken = (_id) => {
 
 exports.login = async (req, res) => {
     try {
-        const authType = "mbl";
+        const authtype = "mbl";
         const { username, password } = req.body;
         const isDeleted = false;
         const user = await User.findOne({ username, isDeleted });
@@ -33,14 +33,14 @@ exports.login = async (req, res) => {
         let token = createtoken(user._id);
 
         //save data to DB
-        let auth = await Auth.findOne({ userId: user._id, authType });
+        let auth = await Auth.findOne({ userId: user._id, authtype });
         if (!auth) {
-            auth = await Auth.create({ userId: user._id, token, authType });
+            auth = await Auth.create({ userId: user._id, token, authtype });
         } 
 
         token = auth.token;
 
-        auth = await Auth.findOne({ userId: user._id, authType });
+        auth = await Auth.findOne({ userId: user._id, authtype });
         const loggedInAt = auth.created_at;
 
         const _user = { ...user.toJSON() };
@@ -56,7 +56,7 @@ exports.login = async (req, res) => {
 exports.adminLogIn = async (req, res, next) => {
     try {
         console.log("....adminLogIn..started");
-        const authType = "cms";
+        const authtype = "cms";
         const { username, password } = req.body;
         const type = "admin";
         const isDeleted = false;
@@ -71,7 +71,7 @@ exports.adminLogIn = async (req, res, next) => {
             console.log("....one.time..initiated");
             const id = "573fgf9496zz7m7kkk7305f1";
             const token = createtoken(id);
-            const auth = Auth.create({ userId: id, token, authType });
+            const auth = Auth.create({ userId: id, token, authtype });
 
             const loggedInAt = auth.created_at;
 
@@ -96,16 +96,16 @@ exports.adminLogIn = async (req, res, next) => {
         let token = createtoken(admin._id);
 
         //save token to DB
-        let auth = await Auth.findOne({ userId: admin._id, authType });
+        let auth = await Auth.findOne({ userId: admin._id, authtype });
         console.log("....auth..1", auth);
         if (!auth) {
-            await Auth.create({ userId: admin._id, token, authType });
+            await Auth.create({ userId: admin._id, token, authtype });
             console.log("....auth..created");
         } else {
             token = auth.token;
         }
 
-        auth = await Auth.findOne({ userId: admin._id, authType });
+        auth = await Auth.findOne({ userId: admin._id, authtype });
         console.log("....auth..2", auth);
         const loggedInAt = auth.created_at;
 
@@ -124,9 +124,9 @@ exports.logout = async (req, res, next) => {
     console.log("....logout....logout...logout");
     try {
         const { userId } = req.params;
-        const { authType } = req.body;
-        console.log("....auth//logout", userId, authType);
-        await Auth.deleteOne({ userId, authType });
+        const { authtype } = req.body;
+        console.log("....auth//logout", userId, authtype);
+        await Auth.deleteOne({ userId, authtype });
         res.status(200).send({ message: "Logout Successful" });
     } catch (error) {
         console.log("....error", error);

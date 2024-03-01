@@ -15,6 +15,7 @@ connectDB()
 app.use(cors());
 
 app.use(express.json());
+
 app.use('/', (req, res, next) => {
     console.log('....params', {
         params: req.params,
@@ -34,13 +35,15 @@ app.post('/api/admin/login', adminLogIn);
 app.delete('/api/logout/:userId', logout);
 app.post("/api/changePassword/user/forgetPassword", forgetpassword)
 
-app.use('/api/', verifyToken);
+// app.use('/api/', verifyToken);
 
-app.use("/api/auth", require("./routes/auth"));
+// app.use("/api/auth", require("./routes/auth"));
 app.use("/api/users", require("./routes/users"));
 app.use("/api/conversation", require("./routes/conversation"));
 app.use("/api/message", require("./routes/message"));
-
+app.use('/', (req, res, next) => {
+    res.send({message: "hello"})
+})
 
 //ErrorHandler (Should be last piece of middleware)
 // app.use(errorHandler);
@@ -57,9 +60,6 @@ process.on("unhandledRejection", (error, promise) => {
 })
 
 
-// 
-// SUPER ADMIN PASSWORD
-// 7e5!Et9Yfr?$2Yv
 //  
 //  
 // FEATURES:

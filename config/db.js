@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const localhostUri = 'mongodb://localhost:27017'
 const dbURI = process.env.MONGO_URI
 
-const client = new MongoClient(dbURI, {
+const client = new MongoClient(localhostUri, {
     serverApi: {
         version: ServerApiVersion.v1,
         strict: true,
@@ -22,7 +22,7 @@ const connectDB = async () => {
     // console.log('....dbURI', dbURI);
 
     mongoose.set('strictQuery', true);
-    await mongoose.connect(dbURI, {
+    await mongoose.connect(localhostUri, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     });
