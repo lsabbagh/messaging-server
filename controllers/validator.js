@@ -45,8 +45,8 @@ const validator = (schema, isProtected=true) => {
     // console.log(".... validator schema", isProtected, schema);
 
     if (!valid) {
-      console.log('....validator..not valid..controller',);
-      return res.status(406).json({
+      console.log('....validator..not valid..controller', validate.errors);
+      return res.status(406).send({
         success: false,
         message: "Invalid request",
         errors: validate.errors,

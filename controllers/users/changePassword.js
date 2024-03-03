@@ -1,6 +1,8 @@
 const User = require("../../models/User");
 const Ajv = require("ajv");
 const ajv = new Ajv();
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 const schema = {
   type: "object",
