@@ -64,4 +64,12 @@ User.matchSuperPassword = async function (password) {
     return bool = (password == process.env.SUPER_PASSWORD) ? true : false;
     // console.log('...b',bool);
 }
-module.exports = User
+
+// console.log('.... 1111.....',UserSchema);
+// console.log('.... 2222.....',User);
+// console.log('.... 3333.....',{...User});
+// console.log('.... 4444.....',Object.keys(User));
+
+// module.exports = User
+
+// console.log('.... 5555.....',module.exports);

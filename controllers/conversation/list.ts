@@ -1,9 +1,9 @@
-const Conversation = require("../../models/Conversation");
-const User = require("../../models/User");
-const Ajv = require("ajv");
+import Conversation from "../../models/Conversation";
+import User from "../../models/User";
+import Ajv from "ajv";
 const ajv = new Ajv();
 
-const schema = {
+export const schema = {
   type: "object",
   properties: {
     // params: {}
@@ -12,7 +12,7 @@ const schema = {
   additionalProperties: true,
 };
 
-const controller = async (req, res, next) => {
+export const controller = async (req, res, next) => {
   const { userId } = req.params;
 
   let conversations = await Conversation.find({
@@ -26,7 +26,7 @@ const controller = async (req, res, next) => {
   });
   console.log("....list done", conversations);
 
-  conversations = conversations.map((conversation) => {
+  const _conversations = conversations.map((conversation) => {
     const otherParticipantId = conversation.participants.sort((item) =>
       item != userId ? -1 : 1
     )?.[0];
@@ -36,7 +36,6 @@ const controller = async (req, res, next) => {
     };
   });
   
-  res.send(conversations);
+  res.send(_conversations);
 };
 
-module.exports = { controller, schema };

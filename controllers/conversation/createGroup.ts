@@ -1,8 +1,8 @@
-const Conversation = require("../../models/Conversation");
-const Ajv = require("ajv");
+import Conversation from "../../models/Conversation";
+import Ajv from "ajv";
 const ajv = new Ajv();
 
-const schema = {
+export const schema = {
   type: "object",
   properties: {
     body: {
@@ -19,7 +19,7 @@ const schema = {
   additionalProperties: true,
 };
 
-const controller = async (req, res) => {
+export const controller = async (req, res) => {
   const { title, participants } = req.body;
   const type = "group";
   const profile = "https://i.imgur.com/g9vUamj.jpg"; //Default group profile
@@ -42,4 +42,3 @@ const controller = async (req, res) => {
   res.status(201).json({ group, messages });
 };
 
-module.exports = { controller, schema };

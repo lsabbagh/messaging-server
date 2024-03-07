@@ -1,8 +1,8 @@
-const User = require("../../models/User");
-const Ajv = require("ajv");
+import User from "../../models/User";
+import Ajv from "ajv";
 const ajv = new Ajv();
 
-const schema = {
+export const schema = {
   type: "object",
   properties: {
     headers: {
@@ -17,11 +17,12 @@ const schema = {
   additionalProperties: true,
 };
 
-const controller = async (req, res, next) => {
+export const controller = async (req, res, next) => {
   const { isdeleted } = req.headers;
   const users = await User.find({ type: "user", isDeleted: isdeleted });
   // console.log("....", users);
   res.send(users);
 };
 
-module.exports = { controller, schema };
+// module.exports = { controller, schema };
+// export default { controller, schema }

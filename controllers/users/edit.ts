@@ -1,8 +1,8 @@
-const User = require("../../models/User");
-const Ajv = require("ajv");
+import User from "../../models/User";
+import Ajv from "ajv";
 const ajv = new Ajv();
 
-const schema = {
+export const schema = {
   type: "object",
   properties: {
     body: {
@@ -10,7 +10,8 @@ const schema = {
       properties: {
         username: { type: "string" },
         email: { type: "string" },
-        isDeleted: { type: "string", enum: ["true", "false"] },
+        // isDeleted: { type: "string", enum: ["true", "false"] },
+        isDeleted: { type: "boolean" },
       },
       required: ["username", "email", "isDeleted"],
       additionalProperties: false,
@@ -20,7 +21,7 @@ const schema = {
   additionalProperties: true,
 };
 
-const controller = async (req, res, next) => {
+export const controller = async (req, res, next) => {
   // console.log(req.params);
   const userId = req.params.id;
   const { username, email, isDeleted } = req.body;
@@ -39,10 +40,10 @@ const controller = async (req, res, next) => {
 
     // Respond with the updated user data
     res.status(200).json({ user: updatedUser });
+
   } catch (error) {
     console.log(error);
-    res.send({ success: false });
+    res.status(500).send({ success: false });
   }
 };
 
-module.exports = { controller, schema };

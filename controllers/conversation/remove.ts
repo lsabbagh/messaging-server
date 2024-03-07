@@ -1,9 +1,9 @@
-const Conversation = require("../../models/Conversation");
-const Message = require("../../models/Message");
-const Ajv = require("ajv");
+import Conversation from "../../models/Conversation";
+import Message from "../../models/Message";
+import Ajv from "ajv";
 const ajv = new Ajv();
 
-const schema = {
+export const schema = {
   type: "object",
   properties: {
     body: {
@@ -19,7 +19,7 @@ const schema = {
   additionalProperties: true,
 };
 
-const controller = async (req, res) => {
+export const controller = async (req, res) => {
   const { conversationId } = req.params;
   const { type } = req.body;
   console.log("....id to be deleted", type, conversationId);
@@ -32,4 +32,3 @@ const controller = async (req, res) => {
   return res.send({ success: true });
 };
 
-module.exports = { controller, schema };

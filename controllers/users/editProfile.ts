@@ -1,8 +1,8 @@
-const User = require("../../models/User");
-const Ajv = require("ajv");
+import User from "../../models/User";
+import Ajv from "ajv";
 const ajv = new Ajv();
 
-const schema = {
+export const schema = {
   type: "object",
   properties: {
     body: {
@@ -21,12 +21,13 @@ const schema = {
   additionalProperties: true,
 };
 
-const controller = async (req, res) => {
+export const controller = async (req, res) => {
   const { id } = req.params;
   let { profilePic, firstName, lastName } = req.body;
 
-  if (!profilePic || profilePic == undefined || profilePic == null)
+  if (!profilePic || profilePic == undefined || profilePic == null) {
     return (profilePic = "https://imgur.com/a/X3TMJ7a");
+  }
 
   try {
     const updatedData = await User.findByIdAndUpdate(
@@ -40,20 +41,10 @@ const controller = async (req, res) => {
     }
 
     res.status(200).json({ updatedData: updatedData });
+
   } catch (error) {
     console.log(error);
-    res.send({ success: false });
+    res.status(500).send({ success: false });
   }
-
-  // const user = await User.findOne({ _id: id })
-  // console.log('....user', user);
-  // const profileData = {
-  //   profilePic: user.profilePic,
-  //   firstName: user.firstName,
-  //   lastName: user.lastName,
-  // }
-  // console.log('....profileData', profileData);
-  // res.status(201).send(profileData);
 };
 
-module.exports = { controller, schema };

@@ -1,8 +1,8 @@
-const Conversation = require("../../models/Conversation");
-const Ajv = require("ajv");
+import Conversation from "../../models/Conversation";
+import Ajv from "ajv";
 const ajv = new Ajv();
 
-const schema = {
+export const schema = {
   type: "object",
   properties: {
     // params: {},
@@ -20,7 +20,7 @@ const schema = {
   additionalProperties: true,
 };
 
-const controller = async (req, res, next) => {
+export const controller = async (req, res, next) => {
   try {
     const { userId } = req.params;
     const { type, id } = req.body;
@@ -62,4 +62,3 @@ const controller = async (req, res, next) => {
   }
 };
 
-module.exports = { controller, schema };

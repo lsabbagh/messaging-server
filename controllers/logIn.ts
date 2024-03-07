@@ -1,33 +1,29 @@
-const express = require("express");
+import express from "express";
 require("dotenv").config({ path: "./config.env" });
-const bcrypt = require("bcrypt");
+import bcrypt from "bcryptjs";
 const saltRounds = 10;
-const Auth = require("../models/auth");
-const User = require("../models/User");
-const jwt = require("jsonwebtoken");
-const nodeMailer = require("nodemailer");
+import Auth from "../models/auth";
+import User from "../models/User";
+import jwt from "jsonwebtoken";
+import nodeMailer from "nodemailer";
 
 const createtoken = (_id) => {
     return jwt.sign({ _id }, process.env.JWT_SECRET, {});
 };
 
-exports.login = async (req, res) => {
+export const login = async (req, res) => {
     try {
         const authtype = "mbl";
         const { username, password } = req.body;
         const isDeleted = false;
         const user = await User.findOne({ username, isDeleted });
-        if (!user) {
-            return res
-                .status(401)
-                .send({ match: false, message: "Incorrect username or password" });
-        }
+
+        if (!user) return res.status(401).send({ match: false, message: "Incorrect username or password" });
+        
         const match = await user.matchPassword(password);
         if (!match) {
             // console.log('stopped..pass');
-            return res
-                .status(401)
-                .send({ match, message: "Incorrect username or password" });
+            return res.status(401).send({ match, message: "Incorrect username or password" });
         }
 
         let token = createtoken(user._id);
@@ -39,8 +35,7 @@ exports.login = async (req, res) => {
         } 
 
         token = auth.token;
-
-        auth = await Auth.findOne({ userId: user._id, authtype });
+        // auth = await Auth.findOne({ userId: user._id, authtype });
         const loggedInAt = auth.created_at;
 
         const _user = { ...user.toJSON() };
@@ -53,7 +48,7 @@ exports.login = async (req, res) => {
     }
 };
 
-exports.adminLogIn = async (req, res, next) => {
+export const adminLogIn = async (req, res, next) => {
     try {
         console.log("....adminLogIn..started");
         const authtype = "cms";
@@ -62,16 +57,12 @@ exports.adminLogIn = async (req, res, next) => {
         const isDeleted = false;
         const admins = await User.find({ type, isDeleted });
         console.log("....admins", admins);
-        if (
-            !admins.length &&
-            username === "superadmin" &&
-            password === process.env.SUPER_PASSWORD
-        ) {
-            console.log("....adminLogin..one.time");
-            console.log("....one.time..initiated");
+        if (!admins.length && username === "superadmin" && password === process.env.SUPER_PASSWORD) {
+            console.log("....adminLogin..one.time..initiated");
+
             const id = "573fgf9496zz7m7kkk7305f1";
             const token = createtoken(id);
-            const auth = Auth.create({ userId: id, token, authtype });
+            const auth = await Auth.create({ userId: id, token, authtype });
 
             const loggedInAt = auth.created_at;
 
@@ -120,7 +111,7 @@ exports.adminLogIn = async (req, res, next) => {
     }
 };
 
-exports.logout = async (req, res, next) => {
+export const logout = async (req, res, next) => {
     console.log("....logout....logout...logout");
     try {
         const { userId } = req.params;
@@ -134,7 +125,7 @@ exports.logout = async (req, res, next) => {
     }
 };
 
-exports.forgetpassword = async (req, res) => {
+export const forgetpassword = async (req, res) => {
     const { username, email } = req.body;
     const user = await User.findOne({ username });
 
@@ -198,7 +189,7 @@ exports.forgetpassword = async (req, res) => {
     res.status(202).json({ match: true });
 };
 
-exports.verifyToken = async (req, res, next) => {
+export const verifyToken = async (req, res, next) => {
     const { token, authtype, userid } = req.headers || {};
     console.log("....verifyToken process", { authtype, token });
     const count = await Auth.count({ /*userId,*/ authtype, token });

@@ -1,13 +1,13 @@
-const User = require("../../models/User");
-const Ajv = require("ajv");
+import User from "../../models/User";
+import Ajv from "ajv";
 // const addFormats = require("ajv-formats");
 // const regex = require("../../utils/regex");
 const ajv = new Ajv();
 // addFormats(ajv);
-const bcrypt = require("bcrypt");
+import bcrypt from "bcrypt";
 const saltRounds = 10;
 
-const schema = {
+export const schema = {
   type: "object",
   properties: {
     body: {
@@ -25,21 +25,18 @@ const schema = {
   additionalProperties: true,
 };
 
-const controller = async (req, res, next) => {
+export const controller = async (req, res, next) => {
   try {
     console.log(".... creating user...");
     const { username, email, password, type } = req.body;
     const isDeleted = false;
 
-    // check for unique username and password
-    // const oldUser = await User.find({ type: "user", username, email });
-    // if (oldUser) {
-    //   console.log('.... old user', { username, email });
-    //   return res.status(406).json({ message: "username or email already in use" })
-    // }
-    // if(password.length<8){
-    //   return res.status(500).json({Error: "password is short"})
-    // }
+    // check for unique username and password length
+    // who should handle username uniquiness DB or NODE
+
+    if(password.length<8){
+      return res.status(500).json({Error: "password should be at least 8 characters"})
+    }
 
     //encrypt password
     const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -64,4 +61,3 @@ const controller = async (req, res, next) => {
   }
 };
 
-module.exports = { controller, schema };

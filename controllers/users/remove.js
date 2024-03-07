@@ -1,5 +1,5 @@
-const User = require("../../models/User");
-const Ajv = require("ajv");
+import { deleteOne } from "../../models/User";
+import Ajv from "ajv";
 const ajv = new Ajv();
 
 // remove has no frontend code
@@ -21,7 +21,7 @@ const schema = {
 
 const controller = async (req, res) => {
   const _id = req.params.id;
-  return User.deleteOne({ _id });
+  return deleteOne({ _id });
 };
 
-module.exports = { controller, schema };
+export default { controller, schema };

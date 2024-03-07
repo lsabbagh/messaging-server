@@ -1,8 +1,8 @@
-const Conversation = require("../../models/Conversation");
-const Ajv = require("ajv")
+import Conversation from "../../models/Conversation";
+import Ajv from "ajv";
 const ajv = new Ajv()
 
-const schema = {
+export const schema = {
   type: "object",
   properties: {
     // params: {},
@@ -24,7 +24,7 @@ const schema = {
 
 
 
-const controller = async (req, res) => {
+export const controller = async (req, res) => {
   const { groupId } = req.params;
   const { title, participants, profile } = req.body;
   console.log('....editGroup', { title, participants, profile });
@@ -47,8 +47,7 @@ const controller = async (req, res) => {
 
   } catch (error) {
     console.log(error);
-    res.send({ success: false });
+    res.status(500).send({ success: false });
   }
 }
 
-module.exports = {controller, schema}

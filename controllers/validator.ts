@@ -1,5 +1,11 @@
-const Ajv = require("ajv");
-
+import Ajv from "ajv";
+import { TValidatorTypes } from "./validator.type";
+import express, {
+  Express,
+  Request,
+  Response,
+  NextFunction,
+} from "express";
 
 const protectedSchema = {
   type: "object",
@@ -20,20 +26,17 @@ const protectedSchema = {
 const protectedAJV = new Ajv();
 const protect = protectedAJV.compile(protectedSchema);
 
-
-const validator = (schema, isProtected=true) => {
-  
+const validator:TValidatorTypes = (schema, isProtected = true) => {
   const ajv = new Ajv();
   const validate = ajv.compile(schema);
 
   return (req, res, next) => {
-
-    if(isProtected) {
-      const authenticated = protect(req)
+    if (isProtected) {
+      const authenticated = protect(req);
       // console.log('....', authenticated)
-      if(!authenticated) {
-      console.log('....validator..not valid..prtotection',);
-      return res.status(402).json({
+      if (!authenticated) {
+        console.log("....validator..not valid..prtotection");
+        return res.status(402).json({
           success: false,
           message: "Not authorized",
           errors: protect.errors,
@@ -45,7 +48,7 @@ const validator = (schema, isProtected=true) => {
     // console.log(".... validator schema", isProtected, schema);
 
     if (!valid) {
-      console.log('....validator..not valid..controller', validate.errors);
+      console.log("....validator..not valid..controller", validate.errors);
       return res.status(406).send({
         success: false,
         message: "Invalid request",
