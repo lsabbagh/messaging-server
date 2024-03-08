@@ -6,9 +6,13 @@ import connectDB from './config/db';
 import errorHandler from './middleware/error';
 import { login, adminLogIn, logout, forgetpassword, verifyToken } from './controllers/logIn';
 import Auth from './models/auth';
+import userRouter from "./routes/users"
+import messageRouter from "./routes/message"
+import convRouter from "./routes/conversation"
 
 const app: Express = express();
 const PORT: number | string = process.env.PORT || 5000;
+
 
 //connect to db
 connectDB()
@@ -30,33 +34,38 @@ app.use('/', (req: Request, res:Response, next:NextFunction) => {
     // res.json('Render.com health check passed.');
 
 });
+
+// ADMIN routes
 app.post('/api/login', login);
 app.post('/api/admin/login', adminLogIn);
 app.delete('/api/logout/:userId', logout);
 app.post("/api/changePassword/user/forgetPassword", forgetpassword)
 
+// Verify token middleware
 // app.use('/api/', verifyToken);
 
-app.use("/api/users", require("./routes/users"));
-app.use("/api/conversation", require("./routes/conversation"));
-app.use("/api/message", require("./routes/message"));
+// Basic Routes
+app.use("/api/users", userRouter);
+app.use("/api/conversation", convRouter);
+app.use("/api/message", messageRouter);
+
 app.use('/', (req:Request, res:Response) => {
     res.send({message: "hello"})
-})
+});
 
-//ErrorHandler (Should be last piece of middleware)
+//Error handling middleware (Should be last piece of middleware)
 // app.use(errorHandler);
 
 const server = app.listen(
     PORT, () => {
         console.log(`Server is running on port ${PORT}`)
     }
-)
+);
+
 process.on("unhandledRejection", (error, promise) => {
     console.log(`Logged Error: ${error}`);
     server.close(() => process.exit(1))
-
-})
+});
 
 
 //  
@@ -74,11 +83,12 @@ process.on("unhandledRejection", (error, promise) => {
 // 
 // 
 // make a web version
-// 
+// check signal app that lets u make a server on ur phone / pc
 
 
 
 // login,
-// USER:
+//      USER:
 // delete
 // edit
+// create

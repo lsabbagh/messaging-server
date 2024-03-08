@@ -3,14 +3,14 @@ import express, {
   Request ,
   Response,
   NextFunction ,
-} from "express";
+} from "express"; 
 
 export type TValidatorProps = {
   schema: Object;
   isProtected: Boolean
 }
 export type TValidatorTypes = (props:TValidatorProps)=>(
-  req: string, 
+  req: Request, 
   res: Response, 
   next: NextFunction
 ) => {};

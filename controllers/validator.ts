@@ -1,11 +1,5 @@
 import Ajv from "ajv";
-import { TValidatorTypes } from "./validator.type";
-import express, {
-  Express,
-  Request,
-  Response,
-  NextFunction,
-} from "express";
+import { TValidatorProps, TValidatorTypes } from "./validator.type";
 
 const protectedSchema = {
   type: "object",
@@ -26,7 +20,7 @@ const protectedSchema = {
 const protectedAJV = new Ajv();
 const protect = protectedAJV.compile(protectedSchema);
 
-const validator:TValidatorTypes = (schema, isProtected = true) => {
+const validator = (schema, isProtected = true) => {
   const ajv = new Ajv();
   const validate = ajv.compile(schema);
 
@@ -60,4 +54,4 @@ const validator:TValidatorTypes = (schema, isProtected = true) => {
   };
 };
 
-module.exports = validator;
+export default validator

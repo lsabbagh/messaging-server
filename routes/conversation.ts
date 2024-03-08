@@ -1,6 +1,6 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
-const validator = require("../controllers/validator")
+import validator from "../controllers/validator";
 
 import { List, Create, Remove, ListAllGroups, CreateGroup, EditGroup, } from "../controllers/conversation/exports";
 
@@ -17,4 +17,4 @@ router.route("/:userId").post(validator(Create.schema), Create.controller);
 
 
 
-module.exports =router;
+export default router

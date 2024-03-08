@@ -1,9 +1,13 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
+
+interface EmailOptions {
+    to: string;
+    subject: string;
+    text: any; // check this one
+}
 
 
-
-
-const sendEmail = (options) => {
+const sendEmail = (options: EmailOptions) => {
 
     const transporter = nodemailer.createTransport({
         host:process.env.EMAIL_HOST,
@@ -28,4 +32,5 @@ const sendEmail = (options) => {
         }
     })
 }
-module.exports = sendEmail;
+
+export default sendEmail;

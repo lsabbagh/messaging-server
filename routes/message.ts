@@ -1,6 +1,6 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
-const validator = require("../controllers/validator")
+import validator from "../controllers/validator";
 
 import {Append} from "../controllers/message/exports"
 
@@ -9,4 +9,4 @@ router.route("/append/:conversationId").post(validator(Append.schema), Append.co
 
 
 
-module.exports =router;
+export default router
