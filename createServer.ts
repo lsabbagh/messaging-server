@@ -5,7 +5,6 @@ import cors from 'cors';
 import connectDB from './config/db';
 import errorHandler from './middleware/error';
 import { login, adminLogIn, logout, forgetpassword, verifyToken } from './controllers/logIn';
-import Auth from './models/auth';
 import userRouter from "./routes/users"
 import messageRouter from "./routes/message"
 import convRouter from "./routes/conversation"

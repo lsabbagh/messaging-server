@@ -1,4 +1,2 @@
-import * as _Append from "./append";
+export {default as Append} from "./append";
 
-
-export const Append = _Append
