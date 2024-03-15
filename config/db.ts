@@ -5,10 +5,10 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const localhostUri = "mongodb://localhost:27017/test";
+// const localhostUri = "mongodb://localhost:27017/test";
 const dbURI = process.env.MONGO_URI;
 
-const client = new MongoClient(localhostUri, {
+const client = new MongoClient(dbURI, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
@@ -30,7 +30,7 @@ const connectDB = async () => {
         useUnifiedTopology: true,
     };
   
-    mongoose.connect(localhostUri, options);
+    mongoose.connect(dbURI, options);
     console.log("MongoDB Connected");
 
   } catch (err) {

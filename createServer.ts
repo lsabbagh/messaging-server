@@ -22,18 +22,7 @@ export default () => {
 	app.use(express.json());
 	
 	app.use('/', (req: Request, res:Response, next:NextFunction) => {
-	    console.log('....params', {
-	        params: req.params,
-	        body: req.body,
-	        originalUrl: req.originalUrl,
-	        headers: req.headers,
-	        // send: res.send,
-	        // json: res.json,
-	        // status: res.status,
-	    });
 	    next()
-	    // res.json('Render.com health check passed.');
-	
 	});
 	
 	// ADMIN routes
@@ -54,19 +43,18 @@ export default () => {
 	    res.send({message: "hello"})
 	});
 	
-	//Error handling middleware (Should be last piece of middleware)
-	// app.use(errorHandler);
+	if(process.env.MODE != 'test') {
+		const server = app.listen(
+	    	PORT, () => {
+	        	console.log(`Server is running on port ${PORT}`)
+	    	}
+		);
 	
-	const server = app.listen(
-	    PORT, () => {
-	        console.log(`Server is running on port ${PORT}`)
-	    }
-	);
-	
-	process.on("unhandledRejection", (error, promise) => {
-	    console.log(`Logged Error: ${error}`);
-	    server.close(() => process.exit(1))
-	});
+		process.on("unhandledRejection", (error, promise) => {
+	    	console.log(`Logged Error: ${error}`);
+	    	server.close(() => process.exit(1))
+		});
+	}
 
 	return app
 	

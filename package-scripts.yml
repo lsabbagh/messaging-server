@@ -1,6 +1,2 @@
-a: npm run test
 test:
-  vitest run controllers/users/test.js
-t:
-  node controllers/users/test.js
-  
+  vitest run --MODE=TEST

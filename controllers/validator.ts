@@ -1,5 +1,7 @@
 import Ajv from "ajv";
 import { TValidatorProps, TValidatorTypes } from "./validator.type";
+import {HttpStatusCode} from 'axios'
+
 
 const protectedSchema = {
   type: "object",
@@ -27,10 +29,9 @@ const validator = (schema, isProtected = true) => {
   return (req, res, next) => {
     if (isProtected) {
       const authenticated = protect(req);
-      // console.log('....', authenticated)
       if (!authenticated) {
-        console.log("....validator..not valid..prtotection");
-        return res.status(402).json({
+        return res.status(HttpStatusCode.Unauthorized)
+        .json({
           success: false,
           message: "Not authorized",
           errors: protect.errors,
@@ -43,7 +44,7 @@ const validator = (schema, isProtected = true) => {
 
     if (!valid) {
       console.log("....validator..not valid..controller", validate.errors);
-      return res.status(406).send({
+      return res.status(HttpStatusCode.BadRequest).send({
         success: false,
         message: "Invalid request",
         errors: validate.errors,
