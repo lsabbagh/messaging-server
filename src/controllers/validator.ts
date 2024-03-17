@@ -42,7 +42,6 @@ const validator = (schema, isProtected = true) => {
     }
 
     const valid = validate(req);
-    // console.log(".... validator schema", isProtected, schema);
 
     if (!valid) {
       console.log("....validator..not valid..controller", validate.errors);
