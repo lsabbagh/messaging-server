@@ -1,0 +1,21 @@
+properties:
+  body:
+    properties:
+      username:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      type:
+        type: string
+        enum:
+          - admin
+          - user
+    required:
+      - username
+      - email
+      - password
+      - type
+    additionalProperties: false
+additionalProperties: true
