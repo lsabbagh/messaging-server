@@ -5,5 +5,7 @@ it('will fallback to the api /', async () => {
     .get('/', {})
 
     expect(response.body.message).toBe('hello')
+    expect(response.status).toBe(200)
+
 })
 

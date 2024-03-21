@@ -16,7 +16,7 @@ const client = new MongoClient(dbURI, {
   },
 });
 
-const connectDB = async () => {
+const dropDb = async () => {
   if (!dbURI) {
     throw new Error("MONGO_URI is not defined in the .env file.");
   }
@@ -30,7 +30,10 @@ const connectDB = async () => {
         useUnifiedTopology: true,
     };
   
-    mongoose.connect(dbURI, options);
+    mongoose.connect(dbURI, options, ()=> {
+      mongoose.connection.db.dropDatabase()
+    });
+    
     console.log("MongoDB Connected");
 
   } catch (err) {
@@ -38,4 +41,5 @@ const connectDB = async () => {
   }
 };
 
-export default connectDB;
+export default dropDb
+  

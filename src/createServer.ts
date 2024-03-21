@@ -3,6 +3,7 @@ require('dotenv').config({ path: './config.env' });
 import express, { Express, Request, Response, NextFunction } from "express";
 import cors from 'cors';
 import connectDB from '../config/db';
+import dropDb from "config/dropdb";
 import errorHandler from './middleware/error';
 import { login, adminLogIn, logout, forgetpassword, verifyToken } from './controllers/logIn';
 import userRouter from "./routes/users"
@@ -32,7 +33,7 @@ export default () => {
 	app.post("/api/changePassword/user/forgetPassword", forgetpassword)
 
 	// Verify token middleware
-	// app.use('/api/', verifyToken);
+	app.use('/api/', verifyToken);
 
 	// Basic Routes
 	app.use("/api/users", userRouter);
@@ -56,6 +57,9 @@ export default () => {
 		});
 	}
 
-	return app
+	const drop = () => {
+		dropDb()
+	}
+	return {app, drop}
 
 }

@@ -10,7 +10,7 @@ interface AuthInterface extends Document {
 
 // Define the Conversation schema
 const AuthenticationSchema: Schema<AuthInterface> = new Schema({
-  userId: { type: Schema.Types.ObjectId, ref: "User"},
+  userId: { type: String, ref: "User"},
   token: { type: String, required: true, unique: true },
   authtype: { type: String, enum: ["cms", "mbl"] },
   created_at: { type: Date, default: Date.now },

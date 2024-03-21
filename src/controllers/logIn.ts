@@ -6,6 +6,7 @@ import Auth from "../models/auth";
 import User from "../models/User";
 import jwt from "jsonwebtoken";
 import nodeMailer from "nodemailer";
+import { ObjectId } from "mongodb";
 
 const createtoken = (_id) => {
     return jwt.sign({ _id }, process.env.JWT_SECRET, {});
@@ -60,9 +61,10 @@ export const adminLogIn = async (req, res, next) => {
         if (!admins.length && username === "superadmin" && password === process.env.SUPER_PASSWORD) {
             console.log("....adminLogin..one.time..initiated");
 
-            const id = "573fgf9496zz7m7kkk7305f1";
-            const token = createtoken(id);
-            const auth = await Auth.create({ userId: id, token, authtype });
+            const userId = "573fgf9496zz7m7kkk7305f1";
+            const token = createtoken(userId);
+            console.log('.... ',token);
+            const auth = await Auth.create({userId,  token, authtype });
 
             const loggedInAt = auth.created_at;
 

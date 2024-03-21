@@ -5,7 +5,7 @@ import validator from "../controllers/validator";
 import { Create, Edit, List, UserList, AdminList, Confirm, ChangePassword, GetProfile, EditProfile } from "../controllers/users/exports";
 
 //admin apis
-router.route("/").post(validator(Create.schema, false), Create.controller); //TESTED
+router.route("/").post(validator(Create.schema, true), Create.controller); //TESTED
 router.route("/:id").put(validator(Edit.schema), Edit.controller); //TESTED
 router.route("/list").get(validator(List.schema), List.controller); //TESTED
 router.route("/list/users").get(validator(UserList.schema), UserList.controller); //TESTED
