@@ -1,12 +1,7 @@
-import express from "express";
-require("dotenv").config({ path: "./config.env" });
-import bcrypt from "bcryptjs";
-const saltRounds = 10;
 import Auth from "../models/auth";
 import User from "../models/User";
 import jwt from "jsonwebtoken";
 import nodeMailer from "nodemailer";
-import { ObjectId } from "mongodb";
 
 const createtoken = (_id) => {
     return jwt.sign({ _id }, process.env.JWT_SECRET, {});
@@ -23,7 +18,6 @@ export const login = async (req, res) => {
 
         const match = await user.matchPassword(password);
         if (!match) {
-            // console.log('stopped..pass');
             return res.status(401).send({ match, message: "Incorrect username or password" });
         }
 
@@ -41,7 +35,6 @@ export const login = async (req, res) => {
 
         const _user = { ...user.toJSON() };
         delete _user.password;
-        console.log("....login user", _user);
 
         return res.send({ match, user: _user, token, loggedInAt });
     } catch (error) {
@@ -51,19 +44,15 @@ export const login = async (req, res) => {
 
 export const adminLogIn = async (req, res, next) => {
     try {
-        console.log("....adminLogIn..started");
         const authtype = "cms";
         const { username, password } = req.body;
         const type = "admin";
         const isDeleted = false;
         const admins = await User.find({ type, isDeleted });
-        console.log("....admins", admins);
         if (!admins.length && username === "superadmin" && password === process.env.SUPER_PASSWORD) {
-            console.log("....adminLogin..one.time..initiated");
 
             const userId = "573fgf9496zz7m7kkk7305f1";
             const token = createtoken(userId);
-            console.log('.... ',token);
             const auth = await Auth.create({userId,  token, authtype });
 
             const loggedInAt = auth.created_at;
@@ -71,16 +60,13 @@ export const adminLogIn = async (req, res, next) => {
             return res.status(201).send({ token, loggedInAt });
         }
         const admin = await User.findOne({ username, type, isDeleted });
-        console.log("....admin", admin);
         if (admin == null || !admin) {
-            console.log("stopped..admin");
             return res
                 .status(401)
                 .send({ match: false, message: "Incorrect username or password" });
         }
         const match = await admin.matchPassword(password);
         if (!match) {
-            console.log("stopped..match");
             return res
                 .status(401)
                 .send({ match, message: "Incorrect username or password" });
@@ -90,39 +76,31 @@ export const adminLogIn = async (req, res, next) => {
 
         //save token to DB
         let auth = await Auth.findOne({ userId: admin._id, authtype });
-        console.log("....auth..1", auth);
         if (!auth) {
             await Auth.create({ userId: admin._id, token, authtype });
-            console.log("....auth..created");
         } else {
             token = auth.token;
         }
 
         auth = await Auth.findOne({ userId: admin._id, authtype });
-        console.log("....auth..2", auth);
         const loggedInAt = auth.created_at;
 
         const _admin = { ...admin.toJSON() };
         delete _admin.password;
-        console.log("....login user", _admin);
 
         return res.status(201).send({ admin: _admin, token, loggedInAt });
     } catch (error) {
-        console.log("....error", error);
         res.status(400).json({ error: error.message });
     }
 };
 
 export const logout = async (req, res, next) => {
-    console.log("....logout....logout...logout");
     try {
         const { userId } = req.params;
         const { authtype } = req.body;
-        console.log("....auth//logout", userId, authtype);
         await Auth.deleteOne({ userId, authtype });
         res.status(200).send({ message: "Logout Successful" });
     } catch (error) {
-        console.log("....error", error);
         res.status(500).send({ message: "Internal Server Error" });
     }
 };
@@ -132,7 +110,6 @@ export const forgetpassword = async (req, res) => {
     const user = await User.findOne({ username });
 
     if (user.email !== email) {
-        console.log(".... email", email);
         return res.status(406).json({ match: false });
     }
 
@@ -193,13 +170,10 @@ export const forgetpassword = async (req, res) => {
 
 export const verifyToken = async (req, res, next) => {
     const { token, authtype, userid } = req.headers || {};
-    console.log("....verifyToken process", { authtype, token });
     const count = await Auth.count({ /*userId,*/ authtype, token });
     if (count == 1) {
-        console.log("....verifyToken accepted", count);
         return next();
     }
 
-    console.log("....verifyToken rejected", count);
     return res.status(401).send({ message: "token doesn't match" });
 };

@@ -12,7 +12,7 @@
     "watch": [
       "."
     ],
-    "exec": "node -r tsconfig-paths/register -r ts-node/register ./src/server.ts",
+    "exec": "node -r tsconfig-paths/register -r ts-node/register ./start.ts",
     "ext": "ts, js"
   },
   "dependencies": {
@@ -49,6 +49,8 @@
     "@types/node": "^20.11.25",
     "@types/nodemailer": "^6.4.14",
     "@types/supertest": "^6.0.2",
+    "eslint": "^8.57.0",
+    "eslint-config-google": "^0.14.0",
     "nodemon": "^2.0.15",
     "supertest": "^6.3.4",
     "ts-node": "^10.9.2",

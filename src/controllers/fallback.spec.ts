@@ -1,11 +1,21 @@
-import {it, expect} from 'vitest'
+import { HttpStatusCode } from 'axios'
+import { describe, it, expect } from 'vitest'
 
-it('will fallback to the api /', async () => {
-   const response = await global.app
-    .get('/', {})
+describe('fallback', () => {
+    it('200', async () => {
+        const response = await global.superTestApp
+            .get('/', {})
 
-    expect(response.body.message).toBe('hello')
-    expect(response.status).toBe(200)
+        expect(response.body.message).toBe('hello')
+        expect(response.status).toBe(HttpStatusCode.Ok)
+    })
 
+    it('200.token', async () => {
+        const response = await global.superTestApp
+            .get('/', {})
+            .set('token', global.token)
+
+        expect(response.body.message).toBe('hello')
+        expect(response.status).toBe(HttpStatusCode.Ok)
+    })
 })
-

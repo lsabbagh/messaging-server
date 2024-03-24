@@ -1,13 +1,23 @@
-import {it, expect} from 'vitest'
-import supertest from 'supertest'
+import { it, expect, describe } from 'vitest'
 
-import {HttpStatusCode} from 'axios'
+import { HttpStatusCode } from 'axios'
 
 
-it.skip('will fail because it is unauthorized', async () => {
-   const response = await global.app
-    .get('/user/profile/1', {})
+describe('getProfile', () => {
 
-    expect(response.status).toBe(HttpStatusCode.Ok)
+    it('200', async () => {
+        const response = await global.superTestApp
+            .get('/user/profile/1', {})
+            .set('token', global.token)
+
+        expect(response.status).toBe(HttpStatusCode.Ok)
+    })
+
+    it('403', async () => {
+        const response = await global.superTestApp
+            .get('/api/user/profile/1')
+
+        expect(response.status).toBe(HttpStatusCode.Unauthorized)
+    })
+
 })
-

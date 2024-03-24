@@ -1,11 +1,10 @@
 import {it, expect} from 'vitest'
-import supertest from 'supertest'
 
 import {HttpStatusCode} from 'axios'
 
 
-it.skip('will fail because it is unauthorized', async () => {
-   const response = await global.app
+it('will fail because it is unauthorized', async () => {
+const response = await global.superTestApp
     .put('/api/profile/1', {})
 
     expect(response.status).toBe(HttpStatusCode.Unauthorized)

@@ -1,8 +1,5 @@
 import { Document, Model, Schema, model } from "mongoose";
 import { compare } from "bcryptjs";
-import jwt from "jsonwebtoken";
-import crypto from 'crypto';
-require("dotenv").config({ path: "./config.env" });
 
 interface UserInterface extends Document {
     username: string;

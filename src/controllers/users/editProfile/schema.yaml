@@ -1,0 +1,13 @@
+properties:
+  body:
+    properties:
+      profilePic:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+    required: [profilePic, firstName, lastName]
+    additionalProperties: true
+required: []
+additionalProperties: true

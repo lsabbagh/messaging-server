@@ -1,6 +1,5 @@
 import { Document, Model, model, Schema } from 'mongoose';
 import Message from './Message';
-import { Interface } from 'readline';
 
 interface ConvInterface extends Document {
   title: string;
@@ -19,7 +18,7 @@ const ConversationSchema: Schema<ConvInterface> = new Schema({
   type: { type: String, enum: ["group", "conversation"] },
   participants: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   created_at: { type: Date, default: Date.now },
-  lastMessage: {type: Date}
+  lastMessage: { type: Date }
 });
 
 ConversationSchema.statics.findConversation = async function (type, id, userId) {

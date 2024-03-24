@@ -6,7 +6,6 @@ const saltRounds = 10;
 
 export default async (req, res, next) => {
   try {
-    console.log(".... creating user...");
     const { username, email, password, type } = req.body;
     const isDeleted = false;
 
@@ -31,7 +30,6 @@ export default async (req, res, next) => {
 
     const _user = { ...user.toJSON() };
     delete _user.password
-    console.log(".... user created", _user);
 
     res.status(201).json({ _user });
 

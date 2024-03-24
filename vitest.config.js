@@ -1,10 +1,19 @@
 import { defineConfig } from "vitest/config";
+import path from 'path'
 
 export default defineConfig({
+
   test: {
-    setupFiles: "./tests/global.setup.ts",
+    setupFiles: "./tests/vite/setupFiles.ts",
     // environment: "./tests/environment.ts",
-    // globalSetup: "./tests/global.setup.ts",
+    globalSetup: "./tests/vite/globalSetup.ts",
     experimentalVmThreads: true,
+  },
+  resolve: {
+    alias: {
+      "@*": [
+        "src/*"
+      ]
+    },
   },
 });
