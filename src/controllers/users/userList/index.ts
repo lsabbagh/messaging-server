@@ -1,4 +1,4 @@
-import schema from "./schema";
 import controller from "./controller";
+import { importSchemaFromYaml } from "src/utils/imports";
 
-export default { schema, controller };
+export default { controller, schema: importSchemaFromYaml(__dirname) };

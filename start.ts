@@ -1,5 +1,5 @@
 import createServer from '@createServer'
-
+import getRedisClient from 'cache/getRedisClient'
 import createExpressApp from '@createExpressApp'
 import getMongooseConnection from 'db/getMongooseConnection'
 
@@ -7,12 +7,16 @@ const port = process.env.PORT || 5000
 const dbName = process.env.DB_NAME || 'dev'
 const dbURI = process.env.MONGO_URI;
 
+const redisUrl = process.env.REDIS_URI
+
 
 const start = async () => {
 
-    const expressApp = createExpressApp()
-
     const mongooseConnection = await getMongooseConnection(dbURI, dbName)
+    const redisClient = await getRedisClient(redisUrl)
+    redisClient.isReady
+    console.log('.... redisClient',redisClient.isReady, redisClient);
+    const expressApp = createExpressApp()
 
     console.log('mongooseConnection state', mongooseConnection.readyState.toString())
 
@@ -24,3 +28,6 @@ const start = async () => {
 }
 
 start()
+
+
+// change db to mongo

@@ -1,0 +1,12 @@
+properties:
+  headers:
+    properties:
+      isdeleted:
+        type: string
+        enum:
+          - 'true'
+          - 'false'
+    required:
+      - isdeleted
+    additionalProperties: true
+additionalProperties: true
