@@ -1,6 +1,7 @@
 scripts:
   test:
-    default: vitest run
+    run: vitest run
+    temp: vitest run list.spec
     ui: vitest --ui --outputFile tests/dist/vite/html
     preview: vitest preview
     html: vite preview --outDir tests/dist/vite/

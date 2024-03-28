@@ -1,6 +1,6 @@
 import { it, expect } from "vitest";
 
-it.only("will change the admins password", async () => {
+it("will change the admins password", async () => {
   const token = global.token;
   const id = global.admin?._id;
   // console.log(".... change password..id..token..", { token, id });

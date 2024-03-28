@@ -3,9 +3,6 @@ import { string } from "yaml/dist/schema/common/string"
 console.log("....globalSetup")
 
 
-declare global {
-    type token = string
-}
 export const setup = (...params) => {
     // console.log('.....globalSetup.setup', params)
 }
