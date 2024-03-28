@@ -12,5 +12,5 @@ jobs:
       - uses: actions/checkout@v3
       - name: Set up Node
         uses: actions/setup-node@v3
-      - run: npm i -g nps && npm i -g bun
+      - run: npm i -g nps bun vitest
       - run: nps test.temp
