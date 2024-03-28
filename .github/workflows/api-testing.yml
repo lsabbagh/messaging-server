@@ -1,0 +1,16 @@
+name: Run Api Tests
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  run-temp:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node
+        uses: actions/setup-node@v3
+      - run: npm -g nps && npm -g bun
+      - run: nps test.temp
