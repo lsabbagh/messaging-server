@@ -1,4 +1,8 @@
 scripts:
-  test: vitest run
+  test:
+    default: vitest run
+    ui: vitest --ui --outputFile tests/dist/vite/html
+    preview: vitest preview
+    html: vite preview --outDir tests/dist/vite/
 
   dev: nodemon

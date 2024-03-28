@@ -8,6 +8,7 @@ export default defineConfig({
     // environment: "./tests/environment.ts",
     globalSetup: "./tests/vite/globalSetup.ts",
     experimentalVmThreads: true,
+    reporters: ['html']
   },
   resolve: {
     alias: {
