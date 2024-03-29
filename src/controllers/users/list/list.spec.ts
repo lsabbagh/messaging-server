@@ -15,7 +15,7 @@ describe('', () => {
         // expect(response.status).toBe(HttpStatusCode.Unauthorized)
     })
 })
-describe.only('Just pass', () => {
+describe('Just pass', () => {
     it('true!' , async () => {
         expect(true).toBe(true)
     })
