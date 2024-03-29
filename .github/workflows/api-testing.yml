@@ -18,7 +18,7 @@ jobs:
         with:
           path: ~/.npm
           key: npm-${{ hashFiles('**/bun.lockb') }}
-      - run: bun install --frozen-lockfile
+      - run: bun install
       - run: echo 'done'
       # - run: nps test.temp
 
@@ -26,4 +26,5 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - run: tslint
+      - run: npm i -g tslint
+      - run: tslint --project src
