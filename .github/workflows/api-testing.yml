@@ -13,5 +13,10 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v3
       - run: npm i -g nps bun vitest
+      - uses: actions/cache@v3
+        id: npm-cache
+        with:
+          path: ~/.npm
+          key: npm-${{ hasFiles('**/package-lock.json') }}
       - run: bun install
       - run: nps test.temp
