@@ -17,6 +17,6 @@ jobs:
         id: npm-cache
         with:
           path: ~/.npm
-          key: npm-${{ hasFiles('**/package-lock.json') }}
+          key: npm-${{ hashFiles('**/bun.lockb') }}
       - run: bun install
       - run: nps test.temp
