@@ -10,6 +10,11 @@ export default defineConfig({
     experimentalVmThreads: true,
     // reporters: ['html']
   },
+  build: {
+    rollupOptions: {
+      external: [/^node:\w+/],
+    },
+  },
   resolve: {
     alias: {
       "@*": [
