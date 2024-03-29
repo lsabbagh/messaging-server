@@ -7,3 +7,4 @@ scripts:
     html: vite preview --outDir tests/dist/vite/
 
   dev: nodemon
+  tslint: tslint --project .

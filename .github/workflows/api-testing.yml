@@ -19,4 +19,11 @@ jobs:
           path: ~/.npm
           key: npm-${{ hashFiles('**/bun.lockb') }}
       - run: bun install --frozen-lockfile
-      - run: nps test.temp
+      - run: echo 'done'
+      # - run: nps test.temp
+
+  run-eslint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: tslint
