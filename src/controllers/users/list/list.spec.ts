@@ -5,7 +5,7 @@ import {HttpStatusCode} from 'axios'
 
 
 // Ɖ✌: list users
-describe('', () => {
+describe('✌', () => {
     it('Unauthorized' , async () => {
         // const response = await global.superTestApp
         // .get('/api/users/list', {})
@@ -13,10 +13,6 @@ describe('', () => {
         // console.log('....', response.response)
 
         // expect(response.status).toBe(HttpStatusCode.Unauthorized)
-    })
-})
-describe('Just pass', () => {
-    it('true!' , async () => {
         expect(true).toBe(true)
     })
 })
