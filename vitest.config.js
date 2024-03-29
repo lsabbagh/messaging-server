@@ -9,7 +9,11 @@ export default defineConfig({
     globalSetup: "./tests/vite/globalSetup.ts",
     experimentalVmThreads: true,
     // reporters: ['html']
+    poolOptions: {
+      threads: {singleThread: true}
+    }
   },
+  
   build: {
     rollupOptions: {
       external: [/^node:\w+/],
