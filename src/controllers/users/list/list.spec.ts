@@ -6,7 +6,7 @@ import {HttpStatusCode} from 'axios'
 
 // Ɖ✌: list users
 describe('✌', () => {
-    it('Unauthorized' , async () => {
+    it('Unauthorized 😌',  () => {
         // const response = await global.superTestApp
         // .get('/api/users/list', {})
 
