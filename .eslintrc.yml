@@ -1,0 +1,14 @@
+env:
+  browser: true
+  es2021: true
+parserOptions:
+  ecmaVersion: latest
+  sourceType: module
+rules: {
+  indent: [error, 2],
+  'react/prop-types': error
+}
+
+files:
+    - '*.ts'
+    - '*.tsx'

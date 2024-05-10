@@ -1,0 +1,10 @@
+scripts:
+  test:
+    run: vitest run
+    temp: vitest run ./src/controllers/users/list/list.spec.ts
+    ui: vitest --ui --outputFile tests/dist/vite/html
+    preview: vitest preview
+    html: vite preview --outDir tests/dist/vite/
+
+  dev: nodemon
+  tslint: tslint --project .

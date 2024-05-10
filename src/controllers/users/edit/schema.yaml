@@ -1,0 +1,16 @@
+properties:
+  body:
+    properties:
+      username:
+        type: string
+      email:
+        type: string
+      isDeleted:
+        type: boolean
+    required:
+      - username
+      - email
+      - isDeleted
+    additionalProperties: false
+required: []
+additionalProperties: true

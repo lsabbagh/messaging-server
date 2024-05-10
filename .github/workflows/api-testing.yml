@@ -1,0 +1,30 @@
+name: Run Api Tests
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  run-temp:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node
+        uses: actions/setup-node@v3
+      - run: npm i -g nps bun vitest
+      - uses: actions/cache@v3
+        id: npm-cache
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('**/bun.lockb') }}
+      - run: bun install
+      - run: echo 'done'
+      # - run: nps test.temp
+
+  run-eslint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: npm i -g tslint
+      - run: tslint --project src

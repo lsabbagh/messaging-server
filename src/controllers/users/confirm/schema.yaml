@@ -1,0 +1,10 @@
+properties:
+  body:
+    properties:
+      password:
+        type: string
+    required:
+      - password
+    additionalProperties: false
+required: []
+additionalProperties: true
